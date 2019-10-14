@@ -23,6 +23,19 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Passw0Rd!
 
+  rm_ticketing_admin:
+    image: romarius75/rm-ticketing-admin:latest
+    restart: always
+    environment:
+      HOST: admin.ticketing-event.com
+      VIRTUAL_HOST: admin.ticketing-event.com
+      LETSENCRYPT_HOST: admin.ticketing-event.com
+      LETSENCRYPT_EMAIL: roman.marlovits@gmail.com
+    volumes:
+    - ./.config.yaml:/node/.config.yaml
+    depends_on:
+    - rm_ticketing_node
+
 volumes:
   rm_ticketing_mysql_volume:
 
