@@ -10,13 +10,13 @@ git@github.com:Roman75/rm-ticketing-node-server.git
 git@github.com:Roman75/rm-ticketing-page.git
 git@github.com:Roman75/rm-ticketing-promoter.git
 git@github.com:Roman75/rm-ticketing-scanner.git
+git@github.com:Roman75/rm-ticketing-tests.git
 ```
 
-create file access.txt with following content
+create .env file with project information with following content
 
 ```bash
 PROJECT_PATH="PATH_TO_DIRECTORY/rm-ticketing"
 USERNAME="user1"
 PASSWORD="Passw0Rd!"
 ```
-"# rm-ticketing-tests" 
