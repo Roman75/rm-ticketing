@@ -1,60 +1,37 @@
 #!/bin/bash
 
-if [ -z "$3" ]
-then
-    echo "";
-    echo "usage for this file:";
-    echo "sh release.sh IMAGE USERNAME PASSWORD";
-    echo "";
-    echo "examples:";
-    echo "sh release.sh rm-ticketing-node-server user1 passw0rd1";
-    echo "sh release.sh rm-ticketing-mysql-server user1 passw0rd1";
-    echo "sh release.sh rm-ticketing-admin user1 passw0rd1";
-    echo "sh release.sh rm-ticketing-page user1 passw0rd1";
-    echo "sh release.sh rm-ticketing-promoter user1 passw0rd1";
-    echo "sh release.sh rm-ticketing-scanner user1 passw0rd1";
-    echo "";
-    exit 1
-fi
+source ./access.txt
 
-IMAGE=$1
-USERNAME=$2
-PASSWORD=$3
+repositories=(rm-ticketing-admin rm-ticketing-mysql-server rm-ticketing-node-server rm-ticketing-page rm-ticketing-promoter rm-ticketing-scanner)
 
-DIR=e:/git/rm-ticketing/$IMAGE
-README=e:/git/rm-ticketing/$IMAGE/README.md
+for repo in "${repositories[@]}"
+do
+    :
 
-cd $DIR
-# ensure we're up to date
-git pull
+    DIR=$PROJECT_PATH/$repo
+    README=$PROJECT_PATH/$repo/README.md
 
-# bump version
-docker run --rm -v $DIR:/app treeder/bump patch
-version=`cat VERSION`
-echo "version: $version"
+    cd $DIR
+    git pull
 
-# tag it
-git add -A
-git commit -m "version $version"
-git tag -a "$version" -m "version $version"
-git push
-git push --tags
+    sh jsdoc.sh
 
-docker build --force-rm --no-cache -t $USERNAME/$IMAGE:latest .
-docker push $USERNAME/$IMAGE:latest
+    docker run --rm -v $DIR:/app treeder/bump patch
+    version=`cat VERSION`
+    echo "======================="
+    echo "repo: $repo"
+    echo "version: $version"
+    echo "======================="
 
-#docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
+    git add -A
+    git commit -m "version $version"
+    git tag -a "$version" -m "version $version"
+    git push
+    git push --tags
 
-# push it
-#docker push $USERNAME/$IMAGE:latest
-#docker push $USERNAME/$IMAGE:$version
+    docker build --force-rm --no-cache -t $USERNAME/$repo:latest .
+    #docker tag $USERNAME/$repo:latest $USERNAME/$repo:$version
+    docker push $USERNAME/$repo:latest
 
-#docker image rm --force $USERNAME/$IMAGE:latest
-#docker image rm --force $USERNAME/$IMAGE:$version
+done
 
-#echo "GET TOKEN"
-#TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${USERNAME}'", "password": "'${PASSWORD}'"}' ${API_URL}/users/login/ | sed -e 's/.*"token": "\(.*\)".*/\1/')
-#echo $TOKEN
-
-#echo "UPDATE DOCKERHUB"
-#RESPONSE=$(curl -s --write-out %{response_code} --output /dev/null -H "Authorization: JWT ${TOKEN}" -X PATCH --data-urlencode full_description@${README} ${API_URL}/repositories/${REPO}/)

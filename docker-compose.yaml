@@ -2,7 +2,15 @@ version: "3.7"
 
 services:
 
-  rm_ticketing_node:
+  rm_ticketing_mysql_server:
+    image: romarius75/rm-ticketing-mysql-server:latest
+    restart: always
+    volumes:
+    - rm_ticketing_mysql_volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Passw0Rd!
+
+  rm_ticketing_node_server:
     image: romarius75/rm-ticketing-node-server:latest
     restart: always
     environment:
@@ -11,17 +19,9 @@ services:
       LETSENCRYPT_HOST: wss.ticketing-event.com
       LETSENCRYPT_EMAIL: roman.marlovits@gmail.com
     volumes:
-    - /etc/rm-ticketing/node/.config.yaml:/app/.config.yaml
+    - /etc/rm-ticketing/node/config.yaml:/app/config.yaml
     depends_on:
     - rm_ticketing_mysql
-
-  rm_ticketing_mysql:
-    image: romarius75/rm-ticketing-mysql-server:latest
-    restart: always
-    volumes:
-    - rm_ticketing_mysql_volume:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: Passw0Rd!
 
   rm_ticketing_admin:
     image: romarius75/rm-ticketing-admin:latest
@@ -32,7 +32,7 @@ services:
       LETSENCRYPT_HOST: admin.ticketing-event.com
       LETSENCRYPT_EMAIL: roman.marlovits@gmail.com
     volumes:
-    - ./.config.yaml:/node/.config.yaml
+    - /etc/rm-ticketing/admin/config.yaml:/app/config.yaml
     depends_on:
     - rm_ticketing_node
 
