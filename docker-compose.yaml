@@ -11,7 +11,7 @@ services:
       LETSENCRYPT_HOST: wss.ticketing-event.com
       LETSENCRYPT_EMAIL: roman.marlovits@gmail.com
     volumes:
-    - ./.config.yaml:/node/.config.yaml
+    - /etc/rm-ticketing/node/.config.yaml:/app/.config.yaml
     depends_on:
     - rm_ticketing_mysql
 

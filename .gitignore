@@ -5,3 +5,9 @@
 /rm-ticketing-page/
 /rm-ticketing-promoter/
 /rm-ticketing-scanner/
+/release-node-server.sh
+/release-mysql-server.sh
+/release-admin.sh
+/release-page.sh
+/release-promoter.sh
+/release-scanner.sh

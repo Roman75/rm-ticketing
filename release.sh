@@ -9,13 +9,18 @@ then
     echo "examples:";
     echo "sh release.sh rm-ticketing-node-server user1 passw0rd1";
     echo "sh release.sh rm-ticketing-mysql-server user1 passw0rd1";
+    echo "sh release.sh rm-ticketing-admin user1 passw0rd1";
+    echo "sh release.sh rm-ticketing-page user1 passw0rd1";
+    echo "sh release.sh rm-ticketing-promoter user1 passw0rd1";
+    echo "sh release.sh rm-ticketing-scanner user1 passw0rd1";
     echo "";
     exit 1
 fi
 
-USERNAME=$1
-PASSWORD=$2
-IMAGE=$3
+IMAGE=$1
+USERNAME=$2
+PASSWORD=$3
+
 DIR=e:/git/rm-ticketing/$IMAGE
 README=e:/git/rm-ticketing/$IMAGE/README.md
 
@@ -28,23 +33,24 @@ docker run --rm -v $DIR:/app treeder/bump patch
 version=`cat VERSION`
 echo "version: $version"
 
-# run build
-./build.sh
-
 # tag it
 git add -A
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
 git push
 git push --tags
-docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
+
+docker build --force-rm --no-cache -t $USERNAME/$IMAGE:latest .
+docker push $USERNAME/$IMAGE:latest
+
+#docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
 
 # push it
-docker push $USERNAME/$IMAGE:latest
-docker push $USERNAME/$IMAGE:$version
+#docker push $USERNAME/$IMAGE:latest
+#docker push $USERNAME/$IMAGE:$version
 
-docker image rm --force $USERNAME/$IMAGE:latest
-docker image rm --force $USERNAME/$IMAGE:$version
+#docker image rm --force $USERNAME/$IMAGE:latest
+#docker image rm --force $USERNAME/$IMAGE:$version
 
 #echo "GET TOKEN"
 #TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'${USERNAME}'", "password": "'${PASSWORD}'"}' ${API_URL}/users/login/ | sed -e 's/.*"token": "\(.*\)".*/\1/')
