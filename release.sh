@@ -23,18 +23,19 @@ source ./.env
 DIR=$PROJECT_PATH/$1
 README=$PROJECT_PATH/$1/README.md
 
-echo "======================="
+echo "============================================"
 echo "repo: $1"
-echo "version: $version"
-echo "======================="
+echo "============================================"
 
 cd $DIR
 git pull
 
-sh jsdoc.sh
-
 docker run --rm -v $DIR:/app treeder/bump patch
 version=`cat VERSION`
+
+echo "update version number: $version"
+
+sh jsdoc.sh
 
 git add -A
 git commit -m "version $version"
@@ -45,4 +46,8 @@ git push --tags
 docker build --force-rm --no-cache -t $USERNAME/$1:latest .
 docker push $USERNAME/$1:latest
 
-
+echo "============================================"
+echo "repo: $1"
+echo "version: $version"
+echo "finished release"
+echo "============================================"

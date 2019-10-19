@@ -1,8 +1,8 @@
 #!/bin/bash
 
-repositories=(rm-ticketing-admin rm-ticketing-mysql-server rm-ticketing-node-server rm-ticketing-page rm-ticketing-promoter rm-ticketing-scanner rm-ticketing-tests)
+source ./.env
 
-for repo in "${repositories[@]}"
+for repo in "${REPOSITORIES[@]}"
 do
     :
     sh release.sh $repo

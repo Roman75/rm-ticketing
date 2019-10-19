@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+
+  rm_ticketing_mysql_server:
+    image: romarius75/rm-ticketing-mysql-server:latest
+    ports:
+    - 3306:3306
+    volumes:
+    - rm_ticketing_mysql_volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Passw0Rd!
+
+  rm_ticketing_node_server:
+    image: romarius75/rm-ticketing-node-server:latest
+    ports:
+    - 8080:8080
+    volumes:
+    - ${PROJECT_PATH}\rm-ticketing-node-server\config.yaml:/app/config.yaml
+    depends_on:
+    - rm_ticketing_mysql_server
+
+volumes:
+  rm_ticketing_mysql_volume:
