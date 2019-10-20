@@ -17,8 +17,10 @@ services:
     - 8080:8080
     volumes:
     - ${PROJECT_PATH}\rm-ticketing-node-server\config.yaml:/app/config.yaml
+    - rm_ticketing_node_volume:/files
     depends_on:
     - rm_ticketing_mysql_server
 
 volumes:
   rm_ticketing_mysql_volume:
+  rm_ticketing_node_volume:

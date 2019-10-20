@@ -5,7 +5,7 @@
 setup a local developement environment
 
 ```bash
-cd git
+cd PATH_TO_YOUR_LOCAL_GIT_REPOSITORIES # (any path  you store your projects)
 git clone git@github.com:Roman75/rm-ticketing.git
 cd rm-ticketing
 git clone git@github.com:Roman75/rm-ticketing-admin.git
@@ -25,6 +25,15 @@ PROJECT_PATH="PATH_TO_DIRECTORY/rm-ticketing"
 USERNAME="user1"
 PASSWORD="Passw0Rd!"
 ```
+
+## copy node server config-default.yaml to config.yaml and adjust settings
+
+```bash
+cd rm-ticketing-node-server
+cp config-default.yaml config.yaml
+edit config.yaml # adjust your settings (eg mailserver connection)
+```
+ 
 
 ## create docker-compose.yaml file for local developement
 
@@ -91,4 +100,8 @@ services:
 volumes:
   rm_ticketing_mysql_volume:
 
+```
+
+```yaml
+docker-compose up -d
 ```
