@@ -1,21 +1,23 @@
-"# rm-ticketing"
+# local developement setup
 
-fetch all dependent repositories
+## fetch all dependent repositories
+
+setup a local developement environment
 
 ```bash
 cd git
-git@github.com:Roman75/rm-ticketing.git
+git clone git@github.com:Roman75/rm-ticketing.git
 cd rm-ticketing
-git@github.com:Roman75/rm-ticketing-admin.git
-git@github.com:Roman75/rm-ticketing-mysql-server.git
-git@github.com:Roman75/rm-ticketing-node-server.git
-git@github.com:Roman75/rm-ticketing-page.git
-git@github.com:Roman75/rm-ticketing-promoter.git
-git@github.com:Roman75/rm-ticketing-scanner.git
-git@github.com:Roman75/rm-ticketing-tests.git
+git clone git@github.com:Roman75/rm-ticketing-admin.git
+git clone git@github.com:Roman75/rm-ticketing-mysql-server.git
+git clone git@github.com:Roman75/rm-ticketing-node-server.git
+git clone git@github.com:Roman75/rm-ticketing-page.git
+git clone git@github.com:Roman75/rm-ticketing-promoter.git
+git clone git@github.com:Roman75/rm-ticketing-scanner.git
+git clone git@github.com:Roman75/rm-ticketing-tests.git
 ```
 
-create .env file with project information with following content
+## create .env file with project information with following content
 
 ```bash
 REPOSITORIES=(rm-ticketing-admin rm-ticketing-mysql-server rm-ticketing-node-server rm-ticketing-page rm-ticketing-promoter rm-ticketing-scanner rm-ticketing-tests)
@@ -24,7 +26,9 @@ USERNAME="user1"
 PASSWORD="Passw0Rd!"
 ```
 
-create docker-compose.yaml file
+## create docker-compose.yaml file for local developement
+
+this file should already exist
 
 ```yaml
 version: "3.7"
@@ -38,7 +42,7 @@ services:
     volumes:
     - rm_ticketing_mysql_volume:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: Passw0Rd!
+      MYSQL_ROOT_PASSWORD: ${PASSWORD}
 
   rm_ticketing_node_server:
     image: romarius75/rm-ticketing-node-server:latest
