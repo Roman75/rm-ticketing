@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ..
 source ./.env
 
 for repo in "${REPOSITORIES[@]}"
@@ -9,6 +10,7 @@ do
     echo "==========================="
     echo $repo
     echo "==========================="
-    git pull
+    git status
     cd ..
 done
+cd git

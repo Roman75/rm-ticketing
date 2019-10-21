@@ -18,6 +18,7 @@ then
     exit 1
 fi
 
+cd ..
 source ./.env
 
 DIR=$PROJECT_PATH/$1
@@ -51,3 +52,5 @@ echo "repo: $1"
 echo "version: $version"
 echo "finished release"
 echo "============================================"
+
+cd release

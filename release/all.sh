@@ -1,10 +1,10 @@
 #!/bin/bash
 
-source ./.env
+source ../.env
 
 for repo in "${REPOSITORIES[@]}"
 do
     :
-    sh release.sh $repo
+    sh repo.sh $repo
 done
 
