@@ -3,19 +3,26 @@
 if [ -z "$1" ]
 then
     echo "";
-    echo "usage for this file:";
-    echo "sh release.sh REPOSITORY";
+    echo "USAGE:";
+    echo "sh repo.sh REPOSITORY [patch|minor|major]";
     echo "";
-    echo "examples:";
-    echo "sh release.sh rm-ticketing-node-server";
-    echo "sh release.sh rm-ticketing-mysql-server";
-    echo "sh release.sh rm-ticketing-admin";
-    echo "sh release.sh rm-ticketing-promoter";
-    echo "sh release.sh rm-ticketing-scanner";
-    echo "sh release.sh rm-ticketing-page";
-    echo "sh release.sh rm-ticketing-tests";
+    echo "EXAMPLES:";
+    echo "sh repo.sh rm-ticketing-node-server patch";
+    echo "sh repo.sh rm-ticketing-mysql-server patch";
+    echo "sh repo.sh rm-ticketing-admin patch";
+    echo "sh repo.sh rm-ticketing-promoter patch";
+    echo "sh repo.sh rm-ticketing-scanner patch";
+    echo "sh repo.sh rm-ticketing-page patch";
+    echo "sh repo.sh rm-ticketing-tests patch";
     echo "";
     exit 1
+fi
+
+if [ -z "$2" ]
+then
+    TYPE="patch"
+else
+    TYPE=$2
 fi
 
 cd ..
@@ -26,16 +33,16 @@ README=$PROJECT_PATH/$1/README.md
 
 echo "============================================"
 echo "repo: $1"
+echo $TYPE
 echo "============================================"
 
 cd $DIR
 git pull
 
-docker run --rm -v $DIR:/app treeder/bump patch
-version=`cat VERSION`
+docker run --rm -v $DIR:/app treeder/bump $TYPE
+version=`cat $DIR/VERSION`
 
-echo "update version number: $version"
-
+sh build.sh
 sh jsdoc.sh
 
 git add -A
@@ -49,8 +56,7 @@ docker push $USERNAME/$1:latest
 
 echo "============================================"
 echo "repo: $1"
+echo "release type: $TYPE"
 echo "version: $version"
-echo "finished release"
+echo "finished"
 echo "============================================"
-
-cd release
