@@ -29,7 +29,6 @@ cd ..
 source ./.env
 
 DIR=$PROJECT_PATH/$1
-README=$PROJECT_PATH/$1/README.md
 
 echo "============================================"
 echo "repo: $1"
@@ -42,7 +41,7 @@ git pull
 docker run --rm -v $DIR:/app treeder/bump $TYPE
 version=`cat $DIR/VERSION`
 
-sh build.sh
+sh deploy.sh
 sh jsdoc.sh
 
 git add -A
