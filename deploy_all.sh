@@ -18,11 +18,11 @@ else
     TYPE=$2
 fi
 
-source ../.env
+source .env
 
 for repo in "${REPOSITORIES[@]}"
 do
     :
-    sh repo.sh $repo $TYPE
+    sh deploy.sh $repo $TYPE
 done
 

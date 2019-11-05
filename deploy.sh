@@ -4,16 +4,21 @@ if [ -z "$1" ]
 then
     echo "";
     echo "USAGE:";
-    echo "sh repo.sh REPOSITORY [patch|minor|major]";
+    echo "sh deploy.sh REPOSITORY [patch (DEFAULT)|minor|major]";
+    echo "";
+    echo "sh deploy.sh (bump 0.0.1)";
+    echo "sh deploy.sh patch (bump 0.0.1)";
+    echo "sh deploy.sh minor (bump 0.1.0)";
+    echo "sh deploy.sh major (bump 1.0.0)";
     echo "";
     echo "EXAMPLES:";
-    echo "sh repo.sh rm-ticketing-node-server patch";
-    echo "sh repo.sh rm-ticketing-mysql-server patch";
-    echo "sh repo.sh rm-ticketing-admin patch";
-    echo "sh repo.sh rm-ticketing-promoter patch";
-    echo "sh repo.sh rm-ticketing-scanner patch";
-    echo "sh repo.sh rm-ticketing-page patch";
-    echo "sh repo.sh rm-ticketing-tests patch";
+    echo "sh deploy.sh rm-ticketing-node-server patch";
+    echo "sh deploy.sh rm-ticketing-mysql-server patch";
+    echo "sh deploy.sh rm-ticketing-admin patch";
+    echo "sh deploy.sh rm-ticketing-promoter patch";
+    echo "sh deploy.sh rm-ticketing-scanner patch";
+    echo "sh deploy.sh rm-ticketing-page patch";
+    echo "sh deploy.sh rm-ticketing-tests patch";
     echo "";
     exit 1
 fi
@@ -25,7 +30,6 @@ else
     TYPE=$2
 fi
 
-cd ..
 source ./.env
 
 DIR=$PROJECT_PATH/$1
@@ -42,7 +46,6 @@ docker run --rm -v $DIR:/app treeder/bump $TYPE
 version=`cat $DIR/VERSION`
 
 sh deploy.sh
-sh jsdoc.sh
 
 git add -A
 git commit -m "version $version"

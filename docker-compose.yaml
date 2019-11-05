@@ -52,9 +52,10 @@ services:
   rm_ticketing_tests:
     image: romarius75/rm-ticketing-tests:latest
     ports:
-    - 8085:8080
+    - 8085:80
     volumes:
-    - ${PROJECT_PATH}\rm-ticketing-tests\config.yaml:/app/config.yaml
+    - ${PROJECT_PATH}\rm-ticketing-tests\nginx-server.conf:/etc/nginx/conf.d/default.conf:ro
+    - ${PROJECT_PATH}\rm-ticketing-tests\config.json:/usr/share/nginx/html/config.json
 
 volumes:
   rm_ticketing_mysql_volume:

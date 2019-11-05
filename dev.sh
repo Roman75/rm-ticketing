@@ -1,7 +1,3 @@
 #!/bin/bash
-docker-compose down
-docker image prune -f
-docker container prune -f
-docker-compose pull
-docker-compose --file docker-compose-dev.yaml up -d
-docker-compose logs -f
+sh up-mysql.sh
+cd rm-ticketing-node-server && sh dev.sh
